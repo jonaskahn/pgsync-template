@@ -1,7 +1,7 @@
 FROM python:3.10-slim-bullseye
 
 RUN apt-get update && apt-get upgrade -y
-RUN apt-get install -y bash nano curl lynx net-tools && apt-get clean
+RUN apt-get install -y bash nano curl lynx net-tools wait-for-it && apt-get clean
 RUN apt-get autoremove && apt-get autoclean
 
 RUN pip install pgsync
