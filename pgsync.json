@@ -1,0 +1,111 @@
+[
+  {
+    "database": "postgres",
+    "index": "users_index",
+    "nodes": {
+      "table": "users",
+      "primary_key": ["id"],
+      "columns": [
+        "id",
+        "username",
+        "unsigned_name",
+        "full_name",
+        "alter_name",
+        "email",
+        "personal_email",
+        "phone",
+        "work_phone",
+        "date_of_birth",
+        "code",
+        "temporary_address",
+        "permanent_address",
+        "group_id",
+        "root_group_id",
+        "status"
+      ],
+      "children": [
+        {
+          "table": "groups",
+          "columns": [
+            "id",
+            "group_code",
+            "group_name",
+            "group_path",
+            "path_name",
+            "group_type",
+            "group_level",
+            "order_no",
+            "status"
+          ],
+          "label": "group",
+          "relationship": {
+            "variant": "object",
+            "type": "one_to_one",
+            "foreign_key": {
+              "child": ["id"],
+              "parent": ["group_id"]
+            }
+          },
+          "transform": {
+            "rename": {
+              "path_name": "group_path_name"
+            }
+          }
+        },
+        {
+          "table": "cm_position",
+          "label": "positions",
+          "columns": ["id", "code", "name", "order_num", "status"],
+          "relationship": {
+            "variant": "object",
+            "type": "one_to_many",
+            "through_tables": ["user_position"]
+          }
+        },
+        {
+          "table": "user_position",
+          "label": "positionRefs",
+          "columns": ["position_id", "position_type"],
+          "relationship": {
+            "variant": "object",
+            "type": "one_to_many",
+            "foreign_key": {
+              "child": ["user_id"],
+              "parent": ["id"]
+            }
+          }
+        }
+      ],
+      "transform": {
+        "mapping": {
+          "phone": {
+            "type": "keyword"
+          },
+          "email": {
+            "type": "keyword"
+          },
+          "username": {
+            "type": "keyword"
+          },
+          "unsigned_name": {
+            "type": "keyword"
+          },
+          "group": {
+            "type": "nested",
+            "properties": {
+              "group_path": {
+                "type": "keyword"
+              }
+            }
+          },
+          "positions": {
+            "type": "nested"
+          },
+          "positionRefs": {
+            "type": "nested"
+          }
+        }
+      }
+    }
+  }
+]
