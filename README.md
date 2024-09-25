@@ -1,4 +1,6 @@
-# HOW TO USE pgsync
+# Pgsync Template
+
+A working template example to sync data from PostgreSQL to ElasticSearch
 
 ## FROM SCRATCH 
 
